@@ -5,6 +5,7 @@ import Toolbar from './components/Toolbar'
 import SpreadsheetTabs from './components/SpreadsheetTabs';
 import { defaultSpreadsheetData } from './data/spreadsheetData';
 import type { SpreadsheetData } from './types/spreadsheet';
+import SpreadsheetGrid from './components/SpreadsheetGrid';
 
 
 import './App.css'
@@ -50,12 +51,23 @@ function App() {
     setActiveSpreadsheetTab(tabId);
   }
 
+  const handleCellEdit = (cellRef: string, value: string) => {
+    console.log(`Cell edit: ${cellRef} = "${value}"`);
+    setData(prevData => ({
+      ...prevData, [cellRef]: { value, type: 'text' }
+    }));
+  }
+
   return (
     <>
     <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
       <Header />
       <Toolbar onAction={handleToolbarAction} />
       <SpreadsheetTabs onTabChange={handleSpreadsheetTabChange} />
+
+      <div className='flex-1 flex flex-col overflow-hidden'>
+          <SpreadsheetGrid data={data} onCellEdit={handleCellEdit} />
+      </div>
     </div>
     </>
   )
